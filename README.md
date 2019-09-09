@@ -1,4 +1,4 @@
-# ImagesProcessing
+# Digital Images Processing
 
 ### Processing PGM Images at the bit level with Python
 
