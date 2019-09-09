@@ -4,7 +4,6 @@
 
 
 ```python
-import numpy as pn
 import pandas as pd
 import array
 import itertools
