@@ -22,6 +22,7 @@ L = f.readlines()
 L2 = [L[i] for i in range(0,len(L)) if i < 3]
 
 [e.decode().rstrip() for e in L2]
+
 # type, cols*rows, maxValue
 ```
 
@@ -91,7 +92,7 @@ f = pl.figure(figsize=(20,5)) #size of the figure, 20x + y5
 
 ax = f.gca() 
 
-df2.groupby(['n'])['n'].count().plot(kind="bar", x="n").set_ylabel("times") # Histo Grama
+df2.groupby(['n'])['n'].count().plot(kind="bar", x="n").set_ylabel("times") # Histogram
 ```
 
 
@@ -109,13 +110,13 @@ df2.groupby(['n'])['n'].count().plot(kind="bar", x="n").set_ylabel("times") # Hi
 ```python
 ############   average  
 
-whioutZero = [e for e in data if e is not 0]
+withoutZero = [e for e in data if e is not 0]
 
-avg = sum(whioutZero)/len(whioutZero)
+avg = sum(withoutZero)/len(withoutZero)
 
-maxValue = max(whioutZero) 
+maxValue = max(withoutZero) 
 
-minValue = min(whioutZero) 
+minValue = min(withoutZero) 
 
 z = (maxValue - minValue)/avg
 z
@@ -134,7 +135,7 @@ z
 
 #o = map(lambda x: 255 if x>z else 0,data)
 
-o = map(lambda x: 0 if x>190 else x,data) #output after apply map for especifict values in this case was manually set
+o = map(lambda x: 0 if x>190 else x,data) 
 
 output = list(o)
 ```
@@ -150,7 +151,7 @@ f2 = open("output.pgm", "wb")
 f2.write(L2[0]) # type of file
 f2.write(L2[1]) # size of file
 f2.write(L2[2]) # max value
-f2.write(newFileByteArray)
+f2.write(newFileByteArray) # data
 
 f2.close()
 
