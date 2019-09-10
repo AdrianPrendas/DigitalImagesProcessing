@@ -1,6 +1,6 @@
-# ImagesProcessing
+# Digital Images Processing
 
-
+### Processing PGM Images at the bit level with Python
 
 ```python
 import matplotlib.image as mpimg
@@ -11,44 +11,28 @@ sys.path.append("./src")
 from pgm_io import PGMio
 ```
 
-
 ```python
 pgm = PGMio("./data/mdb155.pgm")
 ```
 
     success
 
-
-
 ```python
 pgm.header
 ```
 
-
-
-
     {'type': 'P5', 'cols_rows': '1024 1024', 'maxValue': '255'}
-
-
-
 
 ```python
 pgm.cols * pgm.rows == len(pgm.data)
 ```
 
-
-
-
     True
-
-
-
 
 ```python
 print(pgm)
 ```
 
-    
                         input_file: str
                         header: { type, matrixsize, maxValue }
                         data: [int]
@@ -57,8 +41,6 @@ print(pgm)
                         rows: int
                         output_file: str
                         writeFile(output_file:str)
-                    
-
 
 
 ```python
@@ -69,16 +51,13 @@ df = df.rename(columns={0:"n"})
 df.groupby(['n'])['n'].count()
 ```
 
-
-
-
     n
     0      394010
     1         410
     2        3246
     3       13832
     4       38159
-            ...  
+            ...
     225       601
     226       680
     227       481
@@ -86,58 +65,41 @@ df.groupby(['n'])['n'].count()
     229        24
     Name: n, Length: 230, dtype: int64
 
-
-
-
 ```python
 df2 = df.loc[df['n'] > 0] #without values of 0
 
 f = pl.figure(figsize=(20,5)) #size of the figure, 20x + y5
 
-ax = f.gca() 
+ax = f.gca()
 
 df2.groupby(['n'])['n'].count().plot(kind="bar", x="n").set_ylabel("times") # Histogram
 ```
 
-
-
-
     Text(0, 0.5, 'times')
-
-
-
 
 ![png](output_6_1.png)
 
-
-
 ```python
-############   average  
+############   average
 
 withoutZero = [e for e in pgm.data if e is not 0]
 
 avg = sum(withoutZero)/len(withoutZero)
 
-maxValue = max(withoutZero) 
+maxValue = max(withoutZero)
 
-minValue = min(withoutZero) 
+minValue = min(withoutZero)
 
 z = (maxValue - minValue)/avg
-z 
+z
 ```
 
-
-
-
     2.068064794658987
-
-
-
 
 ```python
 ############# processing data
 
-#o = map(lambda x: 255 if x>z else 0,data) # z value doesn't say nothing 
+#o = map(lambda x: 255 if x>z else 0,data) # z value doesn't say nothing
 
 z = 190 #setting manually because the formula is wrong and it must change
 
@@ -147,9 +109,8 @@ output = list(o)
 
 ```
 
-
 ```python
-############# writing a file 
+############# writing a file
 
 pgm.data = output
 
@@ -158,10 +119,8 @@ pgm.writeFile("./data/mamaOutput.pgm")
 
     ./data/mamaOutput.pgm was written
 
-
-
 ```python
-#############     input and output      
+#############     input and output
 %matplotlib inline
 
 images_name = ["./data/input.png","./data/output.png"]
@@ -176,10 +135,7 @@ for i, image in enumerate(images):
     pl.imshow(image)
 ```
 
-
 ![png](output_10_0.png)
-
-
 
 ```python
 
