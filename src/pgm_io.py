@@ -9,7 +9,7 @@ class PGMio:
     def __str__(self):
         return  """
                     input_file: str
-                    header: { type, matrixsize, maxValue }
+                    header: { type, cols_rows, maxValue }
                     data: [int]
                     matrixForm :[[int]]
                     cols: int

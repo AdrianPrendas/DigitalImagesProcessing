@@ -12,21 +12,16 @@ from pgm_io import PGMio
 ```
 
 ```python
-#################            Reading file
+#############    Reading file    #############
 
 pgm = PGMio("./data/mdb155.pgm")
-
-print("success" if pgm.cols * pgm.rows == len(pgm.data) else "fail")
-
-pgm.header
 ```
 
     readed
-    success
 
-
-
-
+```python
+pgm.header
+```
 
     {'type': 'P5', 'cols_rows': '1024 1024', 'maxValue': '255'}
 
@@ -35,7 +30,7 @@ print(pgm)
 ```
 
                         input_file: str
-                        header: { type, matrixsize, maxValue }
+                        header: { type, cols_rows, maxValue }
                         data: [int]
                         matrixForm :[[int]]
                         cols: int
@@ -45,7 +40,14 @@ print(pgm)
 
 
 ```python
-#######################      Histogram
+print("success" if pgm.cols * pgm.rows == len(pgm.data) else "fail")
+```
+
+    success
+
+```python
+#############      Histogram    #############
+
 df = pd.DataFrame(pgm.data)
 
 df = df.rename(columns={0:"n"})
@@ -79,10 +81,10 @@ df2.groupby(['n'])['n'].count().plot(kind="bar", x="n").set_ylabel("times") # Hi
 
     Text(0, 0.5, 'times')
 
-![png](output_4_1.png)
+![png](output_6_1.png)
 
 ```python
-############   average
+#############   average   #############
 
 withoutZero = [e for e in pgm.data if e is not 0]
 
@@ -93,26 +95,25 @@ maxValue = max(withoutZero)
 minValue = min(withoutZero)
 
 z = (maxValue - minValue)/avg
-z
+z # value doesn't say nothing
 ```
 
     2.068064794658987
 
 ```python
-############# processing data
+############# processing data  #############
 
-#o = map(lambda x: 255 if x>z else 0,data) # z value doesn't say nothing
+#o = map(lambda x: 255 if x>z else 0,data)
 
 z = 190 #setting manually because the formula is wrong and it must change
 
 o = map(lambda x: 0 if x>z else x, pgm.data) # applying transform
 
 output = list(o)
-
 ```
 
 ```python
-############# writing a file
+############# writing a file  #############
 
 pgm.data = output
 
@@ -122,7 +123,8 @@ pgm.writeFile("./data/mamaOutput.pgm")
     ./data/mamaOutput.pgm was written
 
 ```python
-#############     input and output
+#############     input and output   #############
+
 %matplotlib inline
 
 images_name = ["./data/input.png","./data/output.png"]
@@ -137,7 +139,7 @@ for i, image in enumerate(images):
     pl.imshow(image)
 ```
 
-![png](output_8_0.png)
+![png](output_10_0.png)
 
 ```python
 
