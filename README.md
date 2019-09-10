@@ -3,47 +3,37 @@
 
 
 ```python
-import numpy as pn
-import pandas as pd
-import array
-import itertools
-import matplotlib.pyplot as pl
 import matplotlib.image as mpimg
+import matplotlib.pyplot as pl
+import pandas as pd
+import sys
+sys.path.append("./src")
+from pgm_io import PGMio
 ```
 
 
 ```python
-####################################        Header   
+pgm = PGMio("./data/mdb155.pgm")
+```
 
-f = open("mdb155.pgm", "rb")
+    success
 
-L = f.readlines()
 
-L2 = [L[i] for i in range(0,len(L)) if i < 3]
 
-[e.decode().rstrip() for e in L2]
-
-# type, cols*rows, maxValue
+```python
+pgm.header
 ```
 
 
 
 
-    ['P5', '1024 1024', '255']
+    {'type': 'P5', 'cols_rows': '1024 1024', 'maxValue': '255'}
 
 
 
 
 ```python
-####################################      Data  
-
-L3 = [L[i] for i in range(0,len(L)) if i >= 3]
-
-L4 = [array.array('B', e).tolist() for e in L3 ]
-
-data = list(itertools.chain(*L4))
-
-1024*1024 == len(data)
+pgm.cols * pgm.rows == len(pgm.data)
 ```
 
 
@@ -55,10 +45,24 @@ data = list(itertools.chain(*L4))
 
 
 ```python
-#", ".join([str(e) for e in data])
-############################################        Histogram  
+print(pgm)
+```
 
-df = pd.DataFrame(data)
+    
+                        input_file: str
+                        header: { type, matrixsize, maxValue }
+                        data: [int]
+                        matrixForm :[[int]]
+                        cols: int
+                        rows: int
+                        output_file: str
+                        writeFile(output_file:str)
+                    
+
+
+
+```python
+df = pd.DataFrame(pgm.data)
 
 df = df.rename(columns={0:"n"})
 
@@ -103,14 +107,14 @@ df2.groupby(['n'])['n'].count().plot(kind="bar", x="n").set_ylabel("times") # Hi
 
 
 
-![png](output_4_1.png)
+![png](output_6_1.png)
 
 
 
 ```python
 ############   average  
 
-withoutZero = [e for e in data if e is not 0]
+withoutZero = [e for e in pgm.data if e is not 0]
 
 avg = sum(withoutZero)/len(withoutZero)
 
@@ -119,7 +123,7 @@ maxValue = max(withoutZero)
 minValue = min(withoutZero) 
 
 z = (maxValue - minValue)/avg
-z
+z 
 ```
 
 
@@ -133,36 +137,34 @@ z
 ```python
 ############# processing data
 
-#o = map(lambda x: 255 if x>z else 0,data)
+#o = map(lambda x: 255 if x>z else 0,data) # z value doesn't say nothing 
 
-o = map(lambda x: 0 if x>190 else x,data) 
+z = 190 #setting manually because the formula is wrong and it must change
+
+o = map(lambda x: 0 if x>190 else x, pgm.data) # applying transform
 
 output = list(o)
+
 ```
 
 
 ```python
 ############# writing a file 
 
-newFileByteArray = bytearray(output)
+pgm.data = output
 
-f2 = open("output.pgm", "wb")
-
-f2.write(L2[0]) # type of file
-f2.write(L2[1]) # size of file
-f2.write(L2[2]) # max value
-f2.write(newFileByteArray) # data
-
-f2.close()
-
+pgm.writeFile("./data/mamaOutput.pgm")
 ```
+
+    ./data/mamaOutput.pgm was written
+
 
 
 ```python
 #############     input and output      
 %matplotlib inline
 
-images_name = ["input.png","output.png"]
+images_name = ["./data/input.png","./data/output.png"]
 images = [mpimg.imread(name) for name in images_name]
 
 pl.figure(figsize=(20,30)) # size of the figure
@@ -170,12 +172,12 @@ pl.figure(figsize=(20,30)) # size of the figure
 columns = 2
 for i, image in enumerate(images):
     pl.subplot(len(images) / columns + 1, columns, i + 1)
-    pl.title(images_name[i].split(".")[0])
+    pl.title(images_name[i])
     pl.imshow(image)
 ```
 
 
-![png](output_8_0.png)
+![png](output_10_0.png)
 
 
 
