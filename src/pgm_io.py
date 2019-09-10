@@ -6,7 +6,7 @@ import itertools
 import array
 
 class PGMio:
-    def __repr__(self):
+    def __str__(self):
         return  """
                     input_file: str
                     header: { type, matrixsize, maxValue }
@@ -42,7 +42,7 @@ class PGMio:
         data = self.data
         cols = self.cols
         rows = self.rows
-        print("success" if cols*rows == len(data) and len(data)==len(matrixForm)  else "fail")
+        print("readed\n" if cols*rows == len(data) and len(data)==len(matrixForm)  else "fail\n")
 
     def writeFile(self, output_file, mode="wb"):
         self.output_file = output_file

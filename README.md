@@ -12,22 +12,24 @@ from pgm_io import PGMio
 ```
 
 ```python
+#################            Reading file
+
 pgm = PGMio("./data/mdb155.pgm")
-```
 
-    success
+print("success" if pgm.cols * pgm.rows == len(pgm.data) else "fail")
 
-```python
 pgm.header
 ```
 
+    readed
+
+    success
+
+
+
+
+
     {'type': 'P5', 'cols_rows': '1024 1024', 'maxValue': '255'}
-
-```python
-pgm.cols * pgm.rows == len(pgm.data)
-```
-
-    True
 
 ```python
 print(pgm)
@@ -44,6 +46,7 @@ print(pgm)
 
 
 ```python
+#######################      Histogram
 df = pd.DataFrame(pgm.data)
 
 df = df.rename(columns={0:"n"})
@@ -77,7 +80,7 @@ df2.groupby(['n'])['n'].count().plot(kind="bar", x="n").set_ylabel("times") # Hi
 
     Text(0, 0.5, 'times')
 
-![png](output_6_1.png)
+![png](output_4_1.png)
 
 ```python
 ############   average
@@ -103,7 +106,7 @@ z
 
 z = 190 #setting manually because the formula is wrong and it must change
 
-o = map(lambda x: 0 if x>190 else x, pgm.data) # applying transform
+o = map(lambda x: 0 if x>z else x, pgm.data) # applying transform
 
 output = list(o)
 
@@ -135,7 +138,7 @@ for i, image in enumerate(images):
     pl.imshow(image)
 ```
 
-![png](output_10_0.png)
+![png](output_8_0.png)
 
 ```python
 
