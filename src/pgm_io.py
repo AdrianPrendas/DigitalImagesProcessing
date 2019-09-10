@@ -42,7 +42,7 @@ class PGMio:
         data = self.data
         cols = self.cols
         rows = self.rows
-        print("readed\n" if cols*rows == len(data) and len(data)==len(matrixForm)  else "fail\n")
+        print("readed" if cols*rows == len(data) and len(data)==len(matrixForm)  else "fail")
 
     def writeFile(self, output_file, mode="wb"):
         self.output_file = output_file
